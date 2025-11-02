@@ -3,6 +3,32 @@ on:
   push:
     paths:
       - 'environments/prod.tfvars'
+  workflow_dispatch:
+    inputs:
+      do_init:
+        type: boolean
+        default: true
+        description: "Run terraform init?"
+      do_fmt:
+        type: boolean
+        default: false
+        description: "Run terraform fmt?"
+      do_validate:
+        type: boolean
+        default: true
+        description: "Run terraform validate?"
+      do_plan:
+        type: boolean
+        default: true
+        description: "Run terraform plan?"
+      do_apply:
+        type: boolean
+        default: false
+        description: "Run terraform apply?"
+      do_destroy:
+        type: boolean
+        default: false
+        description: "Run terraform destroy?"
 
 permissions:
   contents: read
@@ -18,12 +44,14 @@ jobs:
       saname: ritkasas
       scname: ritkascs
       key: prod.tfstate
-      runInit: true
-      runFmt: false
-      runValidate: true
-      runPlan: true
-      runApply: true
-      runDestroy: false
+
+      # 👇 Manual inputs (push pe defaults apply honge; dispatch pe UI me poochhega)
+      runInit:     ${{ inputs.do_init    || true  }}
+      runFmt:      ${{ inputs.do_fmt     || false }}
+      runValidate: ${{ inputs.do_validate|| true  }}
+      runPlan:     ${{ inputs.do_plan    || true  }}
+      runApply:    ${{ inputs.do_apply   || false }}
+      runDestroy:  ${{ inputs.do_destroy || false }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
