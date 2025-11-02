@@ -105,7 +105,7 @@ jobs:
   fmt:
     if: ${{ inputs.runFmt }}
     needs: [init]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infra
@@ -137,7 +137,7 @@ jobs:
   plan:
     if: ${{ inputs.runPlan }}
     needs: [validate, fmt, init]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults:
       run:
@@ -168,7 +168,7 @@ jobs:
   apply:
     if: ${{ inputs.runApply }}
     needs: [plan, validate, fmt, init]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults:
       run:
@@ -197,7 +197,7 @@ jobs:
   destroy:
     if: ${{ inputs.runDestroy }}
     needs: [apply, plan, validate, fmt, init]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults:
       run:
