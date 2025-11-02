@@ -78,17 +78,17 @@ jobs:
           -backend-config="container_name=${{ inputs.scname }}"
           -backend-config="key=${{ inputs.key }}"
 
-      - name: Upload providers dir
-        uses: actions/upload-artifact@v4
-        with:
-          name: tf-providers
-          path: infra/.terraform
+      # - name: Upload providers dir
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: tf-providers
+      #     path: infra/.terraform
 
-      - name: Upload lockfile
-        uses: actions/upload-artifact@v4
-        with:
-          name: tf-lockfile
-          path: infra/.terraform.lock.hcl
+      # - name: Upload lockfile
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: tf-lockfile
+      #     path: infra/.terraform.lock.hcl
 
   fmt:
     if: ${{ inputs.runFmt }}
