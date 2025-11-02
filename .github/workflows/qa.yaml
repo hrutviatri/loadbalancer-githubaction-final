@@ -29,8 +29,8 @@ jobs:
 
       runInit:     ${{ inputs.do_init    || true  }}
       runFmt:      ${{ inputs.do_fmt     || false }}
-      runValidate: ${{ inputs.do_validate|| true  }}
-      runPlan:     ${{ inputs.do_plan    || true  }}
+      runValidate: ${{ inputs.do_validate|| false  }}
+      runPlan:     ${{ inputs.do_plan    || false  }}
       runApply:    ${{ inputs.do_apply   || false }}
       runDestroy:  ${{ inputs.do_destroy || false }}
     secrets:
