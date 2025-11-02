@@ -4,6 +4,8 @@ resource_groups = {
     location = "North Europe"
   }
 
+
+
 }
 ######
 ######
