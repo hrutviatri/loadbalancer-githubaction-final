@@ -86,9 +86,9 @@ jobs:
       - name: Terraform Init (remote backend)
         run: |
           terraform init \
-            -backend-config="resource_group_name=${{ inputs.rgname }}" \
-            -backend-config="storage_account_name=${{ inputs.saname }}" \
-            -backend-config="container_name=${{ inputs.scname }}" \
+            -backend-config="resource_group_name=${{ inputs.rgname }}" 
+            -backend-config="storage_account_name=${{ inputs.saname }}" 
+            -backend-config="container_name=${{ inputs.scname }}" 
             -backend-config="key=${{ inputs.key }}"
 
       - name: Upload providers dir
