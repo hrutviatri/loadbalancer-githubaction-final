@@ -27,13 +27,19 @@ jobs:
       scname: ritkascs
       key: dev.tfstate
 
-      # 👉 Manual run par UI ke inputs lo, push par sab false rakho
-      runInit:     ${{ github.event_name == 'workflow_dispatch' && inputs.do_init     || false }}
+      runInit:     ${{ github.event_name == 'workflow_dispatch' && inputs.do_init     || false  }}
       runFmt:      ${{ github.event_name == 'workflow_dispatch' && inputs.do_fmt      || false }}
-      runValidate: ${{ github.event_name == 'workflow_dispatch' && inputs.do_validate || false }}
+      runValidate: ${{ github.event_name == 'workflow_dispatch' && inputs.do_validate || false  }}
       runPlan:     ${{ github.event_name == 'workflow_dispatch' && inputs.do_plan     || false }}
       runApply:    ${{ github.event_name == 'workflow_dispatch' && inputs.do_apply    || false }}
       runDestroy:  ${{ github.event_name == 'workflow_dispatch' && inputs.do_destroy  || false }}
+
+      # runInit:     ${{ inputs.do_init    || true  }}
+      # runFmt:      ${{ inputs.do_fmt     || false }}
+      # runValidate: ${{ inputs.do_validate|| false  }}
+      # runPlan:     ${{ inputs.do_plan    || false  }}
+      # runApply:    ${{ inputs.do_apply   || false }}
+      # runDestroy:  ${{ inputs.do_destroy || false }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
