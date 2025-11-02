@@ -138,11 +138,11 @@ jobs:
       run:
         working-directory: infra
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with: { name: tf-providers, path: infra/.terraform }
-      - uses: actions/download-artifact@v4
-        with: { name: tf-lockfile, path: infra }
+      # - uses: actions/checkout@v4
+      # - uses: actions/download-artifact@v4
+      #   with: { name: tf-providers, path: infra/.terraform }
+      # - uses: actions/download-artifact@v4
+      #   with: { name: tf-lockfile, path: infra }
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
