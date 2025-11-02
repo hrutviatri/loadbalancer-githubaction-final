@@ -84,12 +84,7 @@ jobs:
       #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Terraform Init (remote backend)
-        run: |
-          terraform init -input=false `
-            -backend-config="resource_group_name=${{ inputs.rgname }}" `
-            -backend-config="storage_account_name=${{ inputs.saname }}" `
-            -backend-config="container_name=${{ inputs.scname }}" `
-            -backend-config="key=${{ inputs.key }}"
+        run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
 
       # - name: Upload providers dir
       #   uses: actions/upload-artifact@v4
@@ -116,7 +111,7 @@ jobs:
       # - uses: actions/download-artifact@v4
       #   with: { name: tf-lockfile, path: infra }
       - name: Terraform fmt
-        run: terraform fmt -check -recursive || terraform fmt -recursive
+        run: terraform fmt 
 
   validate:
     if: ${{ inputs.runValidate }}
