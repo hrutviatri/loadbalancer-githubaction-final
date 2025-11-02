@@ -121,7 +121,7 @@ jobs:
   validate:
     if: ${{ inputs.runValidate }}
     needs: [fmt, init]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     defaults:
       run:
         working-directory: infra
