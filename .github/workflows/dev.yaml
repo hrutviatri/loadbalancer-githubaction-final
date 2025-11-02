@@ -28,7 +28,7 @@ jobs:
       key: dev.tfstate
 
       runInit:     ${{ github.event_name == 'workflow_dispatch' && inputs.do_init     || false  }}
-      runFmt:      ${{ github.event_name == 'workflow_dispatch' && inputs.do_fmt      || true }}
+      runFmt:      ${{ github.event_name == 'workflow_dispatch' && inputs.do_fmt      || false }}
       runValidate: ${{ github.event_name == 'workflow_dispatch' && inputs.do_validate || false  }}
       runPlan:     ${{ github.event_name == 'workflow_dispatch' && inputs.do_plan     || false }}
       runApply:    ${{ github.event_name == 'workflow_dispatch' && inputs.do_apply    || false }}
