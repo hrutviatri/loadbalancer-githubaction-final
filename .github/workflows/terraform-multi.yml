@@ -3,9 +3,9 @@ name: terraform-multi
 on:
   workflow_call:
     inputs:
-      environment:
-        required: true
-        type: string
+      # environment:
+      #   required: true
+      #   type: string
       tfvars_file:
         required: true
         type: string
