@@ -27,12 +27,18 @@ jobs:
       scname: ritkascs
       key: dev.tfstate
 
-      runInit:     ${{ inputs.do_init    || true  }}
-      runFmt:      ${{ inputs.do_fmt     || false }}
-      runValidate: ${{ inputs.do_validate|| false  }}
-      runPlan:     ${{ inputs.do_plan    || false  }}
-      runApply:    ${{ inputs.do_apply   || false }}
-      runDestroy:  ${{ inputs.do_destroy || false }}
+      runInit:     ${{ inputs.do_init  }}
+      runFmt:      ${{ inputs.do_fmt }}
+      runValidate: ${{ inputs.do_validate  }}
+      runPlan:     ${{ inputs.do_plan  }}
+      runApply:    ${{ inputs.do_apply }}
+      runDestroy:  ${{ inputs.do_destroy }}
+      # runInit:     ${{ inputs.do_init    || true  }}
+      # runFmt:      ${{ inputs.do_fmt     || false }}
+      # runValidate: ${{ inputs.do_validate|| false  }}
+      # runPlan:     ${{ inputs.do_plan    || false  }}
+      # runApply:    ${{ inputs.do_apply   || false }}
+      # runDestroy:  ${{ inputs.do_destroy || false }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
