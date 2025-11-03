@@ -166,20 +166,15 @@ jobs:
     if: ${{ inputs.runDestroy
             && inputs.useEnvironmentDestroy
             && (
-                 # 1) apply (protected/unprotected) me se jo run hua ho aur success ho
                  ( inputs.runApply
                    && (
                         ( inputs.useEnvironmentApply  && needs.apply_protected.result   == 'success' ) ||
                         ( !inputs.useEnvironmentApply && needs.apply_unprotected.result == 'success' )
                       )
                  )
-                 # 2) warna plan success
-                 || ( inputs.runPlan     && needs.plan.result     == 'success' )
-                 # 3) warna validate success
+                  || ( inputs.runPlan     && needs.plan.result     == 'success' )
                  || ( inputs.runValidate && needs.validate.result == 'success' )
-                 # 4) warna fmt success
                  || ( inputs.runFmt      && needs.fmt.result      == 'success' )
-                 # 5) warna init success (at least init)
                  || ( inputs.runInit     && needs.init.result     == 'success' )
                )
          }}
