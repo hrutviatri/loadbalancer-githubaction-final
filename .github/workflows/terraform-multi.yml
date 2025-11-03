@@ -105,23 +105,19 @@ jobs:
             infra/.terraform.lock.hcl
           if-no-files-found: error
 
-# ── APPLY (with environment) ─────────────────────────────────────────────
+  # ── APPLY (with environment) ─────────────────────────────────────────────
   apply_env:
     needs: [plan, validate, fmt, init]
-    if: ${{ always()
-            && inputs.runApply
-            && inputs.useEnvironment
-            && (
-                 ( inputs.runPlan                                 && needs.plan.result     == 'success' ) ||
-                 ( !inputs.runPlan && inputs.runValidate          && needs.validate.result == 'success' ) ||
-                 ( !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result  == 'success' ) ||
-                 ( !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
-               )
-         }}
+    if: ${{ inputs.runApply && inputs.useEnvironment && (
+             ( inputs.runPlan                                 && needs.plan.result     == 'success' ) ||
+             ( !inputs.runPlan && inputs.runValidate          && needs.validate.result == 'success' ) ||
+             ( !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result  == 'success' ) ||
+             ( !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
+           ) }}
     runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
-    steps: &apply_steps  # 👈 is anchor ko reuse karenge
+    steps: &apply_steps
       - name: Checkout
         uses: actions/checkout@v4
       - name: Azure Login (OIDC)
@@ -130,7 +126,6 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                  
       - name: Terraform Init (backend)
         run: >
           terraform init -input=false
@@ -138,8 +133,6 @@ jobs:
           -backend-config="storage_account_name=${{ inputs.saname }}"
           -backend-config="container_name=${{ inputs.scname }}"
           -backend-config="key=${{ inputs.key }}"
-
-      
       - name: Download plan
         uses: actions/download-artifact@v4
         with:
@@ -148,38 +141,29 @@ jobs:
       - name: Terraform apply
         run: terraform apply -auto-approve "plan-${{ inputs.environment }}.tfplan"
 
-# ── APPLY (without environment) ──────────────────────────────────────────
+  # ── APPLY (without environment) ──────────────────────────────────────────
   apply_noenv:
     needs: [plan, validate, fmt, init]
-    if: ${{ always()
-            && inputs.runApply
-            && !inputs.useEnvironment
-            && (
-                 ( inputs.runPlan                                 && needs.plan.result     == 'success' ) ||
-                 ( !inputs.runPlan && inputs.runValidate          && needs.validate.result == 'success' ) ||
-                 ( !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result  == 'success' ) ||
-                 ( !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
-               )
-         }}
+    if: ${{ inputs.runApply && !inputs.useEnvironment && (
+             ( inputs.runPlan                                 && needs.plan.result     == 'success' ) ||
+             ( !inputs.runPlan && inputs.runValidate          && needs.validate.result == 'success' ) ||
+             ( !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result  == 'success' ) ||
+             ( !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
+           ) }}
     runs-on: self-hosted
     defaults: { run: { working-directory: infra } }
-    steps: *apply_steps   # 👈 same steps, env key nahin
+    steps: *apply_steps
 
-
-# ── DESTROY (with environment) ───────────────────────────────────────────
+  # ── DESTROY (with environment) ───────────────────────────────────────────
   destroy_env:
     needs: [apply_env, apply_noenv, plan, validate, fmt, init]
-    if: ${{ always()
-            && inputs.runDestroy
-            && inputs.useEnvironment
-            && (
-                 ( inputs.runApply                                              && (needs.apply_env.result == 'success' || needs.apply_noenv.result == 'success') ) ||
-                 ( !inputs.runApply && inputs.runPlan                           && needs.plan.result     == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && inputs.runValidate    && needs.validate.result == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
-               )
-         }}
+    if: ${{ inputs.runDestroy && inputs.useEnvironment && (
+             ( inputs.runApply && (needs.apply_env.result == 'success' || needs.apply_noenv.result == 'success') ) ||
+             ( !inputs.runApply && inputs.runPlan && needs.plan.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && needs.validate.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
+           ) }}
     runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
@@ -202,21 +186,16 @@ jobs:
       - name: Terraform destroy
         run: terraform destroy -auto-approve -var-file="../${{ inputs.tfvars_file }}"
 
-# ── DESTROY (without environment) ────────────────────────────────────────
+  # ── DESTROY (without environment) ────────────────────────────────────────
   destroy_noenv:
     needs: [apply_env, apply_noenv, plan, validate, fmt, init]
-    if: ${{ always()
-            && inputs.runDestroy
-            && !inputs.useEnvironment
-            && (
-                 ( inputs.runApply                                              && (needs.apply_env.result == 'success' || needs.apply_noenv.result == 'success') ) ||
-                 ( !inputs.runApply && inputs.runPlan                           && needs.plan.result     == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && inputs.runValidate    && needs.validate.result == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
-                 ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
-               )
-         }}
+    if: ${{ inputs.runDestroy && !inputs.useEnvironment && (
+             ( inputs.runApply && (needs.apply_env.result == 'success' || needs.apply_noenv.result == 'success') ) ||
+             ( !inputs.runApply && inputs.runPlan && needs.plan.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && needs.validate.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
+             ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && needs.init.result == 'success' )
+           ) }}
     runs-on: self-hosted
     defaults: { run: { working-directory: infra } }
     steps: *destroy_steps
-
