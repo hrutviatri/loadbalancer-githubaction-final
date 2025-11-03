@@ -37,18 +37,33 @@ jobs:
       scname:       ritkascs
       key:          prod.tfstate
 
-      # Run toggles
-      runInit:     ${{ github.event_name == 'push' || inputs.do_init }}
-      runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
-      runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
-      runPlan:     ${{ github.event_name == 'push' || inputs.do_plan }}
-      runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
-      runDestroy:  ${{ inputs.do_destroy }}
+ # Run toggles  (use functions instead of ||)
+      runInit:       ${{ or(eq(github.event_name, 'push'), inputs.do_init) }}
+      runFmt:        ${{ or(eq(github.event_name, 'push'), inputs.do_fmt) }}
+      runValidate:   ${{ or(eq(github.event_name, 'push'), inputs.do_validate) }}
+      runPlan:       ${{ or(eq(github.event_name, 'push'), inputs.do_plan) }}
+      runApply:      ${{ or(eq(github.event_name, 'push'), inputs.do_apply) }}
+      runDestroy:    ${{ inputs.do_destroy }}
 
-      # Approval toggles (separate)
-      useEnvironmentInit:    ${{ inputs.use_environment_init }}
-      useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
-      useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
+# Approval toggles
+      useEnvironmentInit:     ${{ inputs.use_environment_init }}
+      useEnvironmentApply:    ${{ or(eq(github.event_name, 'push'), inputs.use_environment_apply) }}
+      useEnvironmentDestroy:  ${{ inputs.use_environment_destroy }}
+      
+      
+      
+      # # Run toggles
+      # runInit:     ${{ github.event_name == 'push' || inputs.do_init }}
+      # runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
+      # runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
+      # runPlan:     ${{ github.event_name == 'push' || inputs.do_plan }}
+      # runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
+      # runDestroy:  ${{ inputs.do_destroy }}
+
+      # # Approval toggles (separate)
+      # useEnvironmentInit:    ${{ inputs.use_environment_init }}
+      # useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
+      # useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
 
     secrets:
       AZURE_CLIENT_ID:       ${{ secrets.AZURE_CLIENT_ID }}
