@@ -208,7 +208,7 @@ jobs:
 
   # ===== DESTROY =====
   destroy_protected:
-    needs: [init]   # keep it light; we re-init anyway below
+    needs: [init, plan, validate, fmt, apply_protected, apply_unprotected]
     if: ${{ inputs.runDestroy && inputs.useEnvironmentDestroy }}
     runs-on: self-hosted
     environment: ${{ inputs.environment }}   # ✅ approval here
@@ -227,7 +227,7 @@ jobs:
         run: terraform destroy -auto-approve -var-file="../${{ inputs.tfvars_file }}"
 
   destroy_unprotected:
-    needs: [init]
+    needs: [init, plan, validate, fmt, apply_protected, apply_unprotected]
     if: ${{ inputs.runDestroy && !inputs.useEnvironmentDestroy }}
     runs-on: self-hosted
     defaults: { run: { working-directory: infra } }
