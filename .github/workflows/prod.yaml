@@ -46,8 +46,8 @@ jobs:
       # runDestroy:  ${{ inputs.do_destroy }}
 
       # Approval toggles (separate)
-      useEnvironmentInit:    ${{ github.event_name == 'push' || inputs.use_environment_init }}   # at push use with environment
-      # useEnvironmentInit: ${{ github.event_name != 'push' && inputs.use_environment_init }}    # at pust use direct without environment
+      # useEnvironmentInit:    ${{ github.event_name == 'push' || inputs.use_environment_init }}   # at push use with environment
+      useEnvironmentInit: ${{ github.event_name != 'push' && inputs.use_environment_init }}    # at pust use direct without environment
 
       
       useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
