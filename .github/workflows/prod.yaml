@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   call:
-    uses: ./.github/workflows/terraform-multi.yml
+    uses: ./.github/workflows/terraform-multi.yaml
     with:
       environment: prod
       tfvars_file: environments/prod.tfvars
