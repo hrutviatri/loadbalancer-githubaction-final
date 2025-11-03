@@ -52,7 +52,8 @@ jobs:
       # Approval toggles (separate)
       # useEnvironmentInit:    ${{ github.event_name == 'push' || inputs.use_environment_init }}
       # useEnvironmentInit:  ${{ (github.event_name == 'push' && env.PUSH_USE_ENV_INIT == 'true') || inputs.use_environment_init }}
-      useEnvironmentInit: ${{ (github.event_name == 'push' && false) || inputs.use_environment_init }}
+      # useEnvironmentInit: ${{ (github.event_name == 'push' && false) || inputs.use_environment_init }}
+      useEnvironmentInit: ${{ (github.event_name == 'push' && (secrets.PUSH_USE_ENV_INIT == 'true')) || inputs.use_environment_init }}
 
       
       useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
