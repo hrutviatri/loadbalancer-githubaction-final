@@ -48,12 +48,11 @@ jobs:
 
   init_with_env:
     if: ${{ inputs.runInit && inputs.useEnvironmentInit }}
-    runs-on: [self-hosted, Windows]    # apne Windows runner labels yaha daal do (X64 ya custom labels bhi)
+    runs-on: self-hosted    # apne Windows runner labels yaha daal do (X64 ya custom labels bhi)
     environment:
       name: ${{ inputs.environment }}  # e.g., "prod" — yahi env me reviewers set honge
     defaults:
       run:
-        shell: pwsh
         working-directory: infra
     steps:
       - uses: actions/checkout@v4
@@ -70,10 +69,10 @@ jobs:
   # ---------- INIT DIRECT (no approval) ----------
   init_direct:
     if: ${{ inputs.runInit && !inputs.useEnvironmentInit }}
-    runs-on: [self-hosted, Windows]    # same runner, no environment (no approval)
+    runs-on: self-hosted    # same runner, no environment (no approval)
     defaults:
       run:
-        shell: pwsh
+
         working-directory: infra
     steps:
       - uses: actions/checkout@v4
