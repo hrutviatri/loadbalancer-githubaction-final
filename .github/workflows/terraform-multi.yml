@@ -178,27 +178,7 @@ jobs:
   # ===== DESTROY =====
   destroy_protected:
     needs: [init, fmt, validate, plan, apply_protected, apply_unprotected]
-    if: >-
-      ${{
-        inputs.runDestroy &&
-        inputs.useEnvironmentDestroy &&
-        (
-          needs.apply_protected.result   == 'success' ||
-          needs.apply_unprotected.result == 'success' ||
-          needs.plan.result              == 'success' ||
-          needs.validate.result          == 'success' ||
-          needs.fmt.result               == 'success' ||
-          needs.init.result              == 'success' ||
-          (
-            needs.apply_protected.result   == 'skipped' &&
-            needs.apply_unprotected.result == 'skipped' &&
-            needs.plan.result              == 'skipped' &&
-            needs.validate.result          == 'skipped' &&
-            needs.fmt.result               == 'skipped' &&
-            needs.init.result              == 'skipped'
-          )
-        )
-      }}
+    if: ${{ inputs.runDestroy && inputs.useEnvironmentDestroy }}
     runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
@@ -215,31 +195,12 @@ jobs:
         run: terraform destroy -auto-approve -var-file="../${{ inputs.tfvars_file }}"
 
 
+
   
   
   destroy_unprotected:
     needs: [init, fmt, validate, plan, apply_protected, apply_unprotected]
-    if: >-
-      ${{
-        inputs.runDestroy &&
-        !inputs.useEnvironmentDestroy &&
-        (
-          needs.apply_protected.result   == 'success' ||
-          needs.apply_unprotected.result == 'success' ||
-          needs.plan.result              == 'success' ||
-          needs.validate.result          == 'success' ||
-          needs.fmt.result               == 'success' ||
-          needs.init.result              == 'success' ||
-          (
-            needs.apply_protected.result   == 'skipped' &&
-            needs.apply_unprotected.result == 'skipped' &&
-            needs.plan.result              == 'skipped' &&
-            needs.validate.result          == 'skipped' &&
-            needs.fmt.result               == 'skipped' &&
-            needs.init.result              == 'skipped'
-          )
-        )
-      }}
+    if: ${{ inputs.runDestroy && !inputs.useEnvironmentDestroy }}
     runs-on: self-hosted
     defaults: { run: { working-directory: infra } }
     steps:
