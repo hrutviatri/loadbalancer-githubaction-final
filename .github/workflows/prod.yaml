@@ -27,6 +27,10 @@ jobs:
       scname: ritkascs
       key: prod.tfstate
 
+      # 👇 yahi decide hoga
+      use_env_apply: true
+      use_env_destroy: true
+
       # 👇 Simple clear logic
       # If push → only init/fmt/validate/plan true
       # If manual → follow checkbox inputs
