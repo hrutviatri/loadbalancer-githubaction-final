@@ -12,7 +12,7 @@ on:
       do_plan:         { type: boolean, default: true,  description: "Run terraform plan?" }
       do_apply:        { type: boolean, default: false, description: "Run terraform apply?" }
       do_destroy:      { type: boolean, default: false, description: "Run terraform destroy?" }
-      use_environment: { type: boolean, default: true,  description: "Require environment approval for apply?" }  # 👈 NEW
+      use_environment: { type: boolean, default: true,  description: "Require environment approval for apply?" }
 
 permissions:
   contents: read
@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   call:
-    uses: ./.github/workflows/terraform-multi.yaml
+    uses: ./.github/workflows/terraform-multi.yml   # 👈 ensure extension matches
     with:
       environment: prod
       tfvars_file: environments/prod.tfvars
@@ -33,7 +33,7 @@ jobs:
       scname: ritkascs
       key: prod.tfstate
 
-      # Push → auto: init/fmt/validate/plan + apply (with approval)
+      # Logic: auto on push, manual configurable
       runInit:     ${{ github.event_name == 'push' || inputs.do_init }}
       runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
       runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
@@ -41,7 +41,7 @@ jobs:
       runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
       runDestroy:  ${{ github.event_name != 'push' && inputs.do_destroy }}
 
-      # Approval toggle:
+      # Approval toggle: push → always true, manual → checkbox
       useEnvironment: ${{ github.event_name == 'push' || inputs.use_environment }}
 
     secrets:
