@@ -8,8 +8,8 @@ on:
     inputs:
       do_init:                 { type: boolean, default: false,  description: "Run terraform init?" }
       use_environment_init:    { type: boolean, default: false,   description: "Require environment approval for init?" }
-      do_fmt:                  { type: boolean, default: false,  description: "Run terraform fmt?" }
-      do_validate:             { type: boolean, default: false,  description: "Run terraform validate?" }
+      # do_fmt:                  { type: boolean, default: false,  description: "Run terraform fmt?" }
+      # do_validate:             { type: boolean, default: false,  description: "Run terraform validate?" }
       do_plan:                 { type: boolean, default: false,  description: "Run terraform plan?" }
       do_apply:                { type: boolean, default: false, description: "Run terraform apply?" }
       do_destroy:              { type: boolean, default: false, description: "Run terraform destroy?" }
@@ -39,8 +39,8 @@ jobs:
       
       # Run toggles
       runInit:     ${{ github.event_name == 'push' || inputs.do_init }}
-      runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
-      runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
+      # runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
+      # runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
       runPlan:     ${{ github.event_name == 'push' || inputs.do_plan }}
       runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
       # runDestroy:  ${{ inputs.do_destroy }}
