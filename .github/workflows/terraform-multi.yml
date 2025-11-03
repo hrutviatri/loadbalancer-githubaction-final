@@ -179,24 +179,23 @@ jobs:
   destroy_protected:
     needs: [init, fmt, validate, plan, apply_protected, apply_unprotected]
     if: >-
-      ${{
-        inputs.runDestroy &&
-        inputs.useEnvironmentDestroy &&
-        (
+      ${{ inputs.runDestroy &&
+          inputs.useEnvironmentDestroy &&
           (
-            inputs.runApply &&
             (
-              (  inputs.useEnvironmentApply  && success(needs.apply_protected)   ) ||
-              ( !inputs.useEnvironmentApply && success(needs.apply_unprotected) )
-            )
+              inputs.runApply &&
+              (
+                (  inputs.useEnvironmentApply  && needs.apply_protected.result   == 'success' ) ||
+                ( !inputs.useEnvironmentApply && needs.apply_unprotected.result == 'success' )
+              )
+            ) ||
+            ( !inputs.runApply && inputs.runPlan      && needs.plan.result      == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && needs.validate.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && inputs.runInit && needs.init.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && !inputs.runInit )
           )
-          || ( !inputs.runApply && inputs.runPlan     && success(needs.plan) )
-          || ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && success(needs.validate) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && success(needs.fmt) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && inputs.runInit && success(needs.init) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && !inputs.runInit )
-        )
-      }}
+        }}
     runs-on: self-hosted
     environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
@@ -212,29 +211,29 @@ jobs:
       - name: Terraform destroy (protected)
         run: terraform destroy -auto-approve -var-file="../${{ inputs.tfvars_file }}"
 
+
   
   
   destroy_unprotected:
     needs: [init, fmt, validate, plan, apply_protected, apply_unprotected]
     if: >-
-      ${{
-        inputs.runDestroy &&
-        !inputs.useEnvironmentDestroy &&
-        (
+      ${{ inputs.runDestroy &&
+          !inputs.useEnvironmentDestroy &&
           (
-            inputs.runApply &&
             (
-              (  inputs.useEnvironmentApply  && success(needs.apply_protected)   ) ||
-              ( !inputs.useEnvironmentApply && success(needs.apply_unprotected) )
-            )
+              inputs.runApply &&
+              (
+                (  inputs.useEnvironmentApply  && needs.apply_protected.result   == 'success' ) ||
+                ( !inputs.useEnvironmentApply && needs.apply_unprotected.result == 'success' )
+              )
+            ) ||
+            ( !inputs.runApply && inputs.runPlan      && needs.plan.result      == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && needs.validate.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && needs.fmt.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && inputs.runInit && needs.init.result == 'success' ) ||
+            ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && !inputs.runInit )
           )
-          || ( !inputs.runApply && inputs.runPlan     && success(needs.plan) )
-          || ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && success(needs.validate) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && success(needs.fmt) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && inputs.runInit && success(needs.init) )
-          || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && !inputs.runInit )
-        )
-      }}
+        }}
     runs-on: self-hosted
     defaults: { run: { working-directory: infra } }
     steps:
