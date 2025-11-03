@@ -44,7 +44,7 @@ jobs:
 
       # Separate approval toggles:
       useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
-      useEnvironmentDestroy: ${{ github.event_name == 'push' && false || inputs.use_environment_destroy }}
+      useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
       # ↑ Note: push pe destroy waise bhi off hai (runDestroy false), isliye yeh mapping safe hai.
 
     secrets:
