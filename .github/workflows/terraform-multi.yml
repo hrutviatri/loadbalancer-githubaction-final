@@ -110,7 +110,7 @@ jobs:
     needs: [plan, validate, fmt, init]
     if: ${{ inputs.runApply && inputs.useEnvironment }}
     runs-on: self-hosted
-    environment: ${{ inputs.environment }}
+    # environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
     steps:
       - name: Checkout
@@ -171,7 +171,7 @@ jobs:
     needs: [apply_env, apply_noenv, plan, validate, fmt, init]
     if: ${{ inputs.runDestroy && inputs.useEnvironment }}
     runs-on: self-hosted
-    environment: ${{ inputs.environment }}
+    # environment: ${{ inputs.environment }}
     defaults: { run: { working-directory: infra } }
     steps:
       - name: Checkout
