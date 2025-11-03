@@ -34,18 +34,17 @@ jobs:
       scname:       ritkascs
       key:          prod.tfstate
 
-      # Push → auto: init/fmt/validate/plan + apply; destroy normally manual hi rakhenge
+      # Run toggles
       runInit:     ${{ github.event_name == 'push' || inputs.do_init }}
       runFmt:      ${{ github.event_name == 'push' || inputs.do_fmt }}
       runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
       runPlan:     ${{ github.event_name == 'push' || inputs.do_plan }}
       runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
-      runDestroy:  ${{ github.event_name != 'push' && inputs.do_destroy }}
+      runDestroy:  ${{ inputs.do_destroy }}
 
-      # Separate approval toggles:
+      # Approval toggles (separate)
       useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
       useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
-      # ↑ Note: push pe destroy waise bhi off hai (runDestroy false), isliye yeh mapping safe hai.
 
     secrets:
       AZURE_CLIENT_ID:       ${{ secrets.AZURE_CLIENT_ID }}
