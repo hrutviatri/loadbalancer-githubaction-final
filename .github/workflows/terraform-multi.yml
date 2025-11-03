@@ -20,7 +20,7 @@ on:
       # separate approval toggles
       useEnvironmentInit:    { type: boolean, default: true }
       useEnvironmentApply:   { type: boolean, default: true }
-      useEnvironmentDestroy: { type: boolean, default: true }
+      useEnvironmentDestroy: { type: boolean, default: false }
 
     secrets:
       AZURE_CLIENT_ID:       { required: true }
