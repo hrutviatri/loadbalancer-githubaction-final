@@ -43,12 +43,12 @@ jobs:
       runValidate: ${{ github.event_name == 'push' || inputs.do_validate }}
       runPlan:     ${{ github.event_name == 'push' || inputs.do_plan }}
       runApply:    ${{ github.event_name == 'push' || inputs.do_apply }}
-      runDestroy:  ${{ inputs.do_destroy }}
+      # runDestroy:  ${{ inputs.do_destroy }}
 
       # Approval toggles (separate)
       useEnvironmentInit:    ${{ github.event_name == 'push' || inputs.use_environment_init }}
       useEnvironmentApply:   ${{ github.event_name == 'push' || inputs.use_environment_apply }}
-      useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
+      # useEnvironmentDestroy: ${{ inputs.use_environment_destroy }}
 
     secrets:
       AZURE_CLIENT_ID:       ${{ secrets.AZURE_CLIENT_ID }}
