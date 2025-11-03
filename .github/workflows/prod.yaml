@@ -15,8 +15,8 @@ on:
       do_destroy:              { type: boolean, default: false, description: "Run terraform destroy?" }
 
       
-      use_environment_apply:   { type: boolean, default: true,  description: "Require environment approval for apply?" }
-      use_environment_destroy: { type: boolean, default: true,  description: "Require environment approval for destroy?" }
+      use_environment_apply:   { type: boolean, default: false,  description: "Require environment approval for apply?" }
+      use_environment_destroy: { type: boolean, default: false,  description: "Require environment approval for destroy?" }
 
 permissions:
   contents: read
