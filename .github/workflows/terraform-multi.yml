@@ -183,7 +183,6 @@ jobs:
         inputs.runDestroy &&
         inputs.useEnvironmentDestroy &&
         (
-          # 1) Apply enabled ho to usi ki success chaiye (protected/unprotected jo applicable ho)
           (
             inputs.runApply &&
             (
@@ -191,15 +190,10 @@ jobs:
               ( !inputs.useEnvironmentApply && success(needs.apply_unprotected) )
             )
           )
-          # 2) Warna Plan enabled ho to plan success chaiye
           || ( !inputs.runApply && inputs.runPlan     && success(needs.plan) )
-          # 3) Warna Validate enabled ho to validate success
           || ( !inputs.runApply && !inputs.runPlan && inputs.runValidate && success(needs.validate) )
-          # 4) Warna Fmt enabled ho to fmt success
           || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && inputs.runFmt && success(needs.fmt) )
-          # 5) Warna Init enabled ho to init success
           || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && inputs.runInit && success(needs.init) )
-          # 6) Agar upar ka koi bhi stage enabled hi nahi tha -> destroy akela allowed
           || ( !inputs.runApply && !inputs.runPlan && !inputs.runValidate && !inputs.runFmt && !inputs.runInit )
         )
       }}
