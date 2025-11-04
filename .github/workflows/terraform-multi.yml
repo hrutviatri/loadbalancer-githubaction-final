@@ -65,16 +65,16 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
-      - name: Terraform Init (remote backend)
-        run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
+      # - name: Terraform Init (remote backend)
+      #   run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
 
-      - name: Terraform fmt
-        run: terraform fmt
-        continue-on-error: false
+      # - name: Terraform fmt
+      #   run: terraform fmt
+      #   continue-on-error: false
 
-      - name: Terraform validate
-        run: terraform validate
-        continue-on-error: false
+      # - name: Terraform validate
+      #   run: terraform validate
+      #   continue-on-error: false
 
 
   # ---------- INIT DIRECT (no approval) ----------
@@ -93,16 +93,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform Init (remote backend)
-        run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
+      # - name: Terraform Init (remote backend)
+      #   run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
        
-      - name: Terraform fmt
-        run: terraform fmt
-        continue-on-error: false
+      # - name: Terraform fmt
+      #   run: terraform fmt
+      #   continue-on-error: false
 
-      - name: Terraform validate
-        run: terraform validate
-        continue-on-error: false
+      # - name: Terraform validate
+      #   run: terraform validate
+      #   continue-on-error: false
   
   # ---------- PLAN WITH APPROVAL ----------
   plan_with_env:
