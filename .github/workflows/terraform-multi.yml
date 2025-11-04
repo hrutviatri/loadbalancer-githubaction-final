@@ -19,6 +19,7 @@ on:
 
       # separate approval toggles
       useEnvironmentInit:    { type: boolean, default: true }
+      useEnvironmentPlan:   { type: boolean, default: true }
       useEnvironmentApply:   { type: boolean, default: true }
       useEnvironmentDestroy: { type: boolean, default: false }
 
@@ -106,7 +107,7 @@ jobs:
   # ---------- PLAN WITH APPROVAL ----------
   plan_with_env:
     needs: [init_with_env, init_direct]
-    if: ${{ inputs.runPlan && inputs.useEnvironmentApply && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    if: ${{ inputs.runPlan && inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
     runs-on: self-hosted
     environment:
       name: ${{ inputs.environment }}
@@ -136,7 +137,7 @@ jobs:
   # ---------- PLAN DIRECT (NO APPROVAL) ----------
   plan_direct:
     needs: [init_with_env, init_direct]
-    if: ${{ inputs.runPlan && !inputs.useEnvironmentApply && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    if: ${{ inputs.runPlan && !inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
     runs-on: self-hosted
     defaults:
       run:
