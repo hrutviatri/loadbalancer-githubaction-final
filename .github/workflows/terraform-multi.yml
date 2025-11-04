@@ -107,7 +107,14 @@ jobs:
   # ---------- PLAN WITH APPROVAL ----------
   plan_with_env:
     needs: [init_with_env, init_direct]
-    if: ${{ inputs.runPlan && inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    # if: ${{ inputs.runPlan && inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    if: ${{ inputs.runPlan && inputs.useEnvironmentPlan &&
+      (
+        !inputs.runInit ||
+        (contains(fromJSON('["success","skipped"]'), needs.init_with_env.result) ||
+         contains(fromJSON('["success","skipped"]'), needs.init_direct.result))
+      )
+      }}
     runs-on: self-hosted
     environment:
       name: ${{ inputs.environment }}
@@ -137,7 +144,19 @@ jobs:
   # ---------- PLAN DIRECT (NO APPROVAL) ----------
   plan_direct:
     needs: [init_with_env, init_direct]
-    if: ${{ inputs.runPlan && !inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    # if: ${{ inputs.runPlan && !inputs.useEnvironmentPlan && ((inputs.runInit && (needs.init_with_env.result == 'success' || needs.init_direct.result == 'success')) || (!inputs.runInit)) }}
+    if: ${{ 
+      inputs.runPlan &&
+      !inputs.useEnvironmentPlan &&
+      (
+        !inputs.runInit ||
+        (
+          contains(fromJSON('["success","skipped"]'), needs.init_with_env.result) ||
+          contains(fromJSON('["success","skipped"]'), needs.init_direct.result)
+        )
+      )
+      }}
+
     runs-on: self-hosted
     defaults:
       run:
