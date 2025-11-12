@@ -220,7 +220,7 @@ jobs:
   # 4️⃣ DESTROY
   destroy:
     # needs: [apply]
-    needs: [init, plan, apply]
+    # needs: [init, plan, apply]
     # if: ${{ inputs.runDestroy && needs.apply.result == 'success' }}
 
     if: >-
