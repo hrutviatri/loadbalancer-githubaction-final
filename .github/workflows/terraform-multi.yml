@@ -102,13 +102,17 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform Init (Backend)
-        run: |
-          terraform init -input=false \
-            -backend-config="resource_group_name=ritkargs" \
-            -backend-config="storage_account_name=ritkasas" \
-            -backend-config="container_name=ritkascs" \
-            -backend-config="key=prod.tfstate"
+      # - name: Terraform Init (Backend)
+      #   run: |
+      #     terraform init -input=false \
+      #       -backend-config="resource_group_name=ritkargs" \
+      #       -backend-config="storage_account_name=ritkasas" \
+      #       -backend-config="container_name=ritkascs" \
+      #       -backend-config="key=prod.tfstate"
+
+      - name: Terraform Init
+        run: terraform init -input=false -backend-config="resource_group_name=${{ inputs.rgname }}" -backend-config="storage_account_name=${{ inputs.saname }}" -backend-config="container_name=${{ inputs.scname }}" -backend-config="key=${{ inputs.key }}"
+
 
       - name: Terraform Plan
         run: terraform plan -var-file="../environments/prod.tfvars" -out="plan-prod.tfplan"
