@@ -90,6 +90,8 @@ jobs:
     needs: [init]
     if: ${{ inputs.runPlan && (needs.init.result == 'success' || !inputs.runInit) }}
     runs-on: self-hosted
+    environment: ${{ inputs.useEnvironmentPlan && inputs.environment || '' }}
+
     defaults:
       run:
         working-directory: ${{ env.WORKDIR }}
