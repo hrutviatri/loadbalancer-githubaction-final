@@ -224,17 +224,7 @@ jobs:
     # needs: [init, plan, apply]
     # if: ${{ inputs.runDestroy && needs.apply.result == 'success' }}
 
-    if: >-
-      ${{
-        inputs.runDestroy &&
-        (
-          (inputs.runApply && needs.apply.result == 'success') ||
-          (!inputs.runApply && inputs.runPlan && needs.plan.result == 'success') ||
-          (!inputs.runApply && !inputs.runPlan && inputs.runInit && needs.init.result == 'success') ||
-          (!inputs.runApply && !inputs.runPlan && !inputs.runInit)
-        )}}
- 
-
+    if: ${{ inputs.runDestroy }}
     runs-on: self-hosted
     environment: ${{ inputs.useEnvironmentDestroy && inputs.environment || '' }}
     defaults:
