@@ -6,6 +6,8 @@ resource_groups = {
 }
 
 
+
+
 vnets = {
   vnet1 = {
     vnet_name     = "pahelavnet-prod"

@@ -10,14 +10,14 @@ terraform {
 provider "azurerm" {
   features {}
     # subscription_id = "95a90f4b-7e15-47ba-95ab-0d52bac078e4"
-  # use_oidc = true
+  use_oidc = true
 }
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = "ritkargs"
-    storage_account_name = "ritkasas"
-    container_name       = "ritkascs"
-    key                  = "first.tfstate"
+    # resource_group_name  = "ritkargs"
+    # storage_account_name = "ritkasas"
+    # container_name       = "ritkascs"
+    # key                  = "first.tfstate"
   }
 }
