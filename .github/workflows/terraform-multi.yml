@@ -60,7 +60,6 @@ jobs:
   # 2️⃣ PLAN
   plan:
     name: Terraform Plan
-    # needs: [init_fmt_validate]
     needs: [init]
     if: ${{ inputs.runPlan && (needs.init.result == 'success' || !inputs.runInit) }}
     runs-on: self-hosted
@@ -72,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      
+
       - name: Azure Login
         uses: azure/login@v2
         with:
