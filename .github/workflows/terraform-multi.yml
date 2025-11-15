@@ -210,13 +210,11 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        # if: ${{ inputs.require_approval || github.event_name == 'push' }}
         run: terraform apply -auto-approve "tf-plan-${{ inputs.environment }}.tfplan"
       # Yha tak wala block...
 
       # Use below mentioned with , when in provider.tf > provider "azurerm" > use_oidc = false (ya fir yeh line humne use hi nhi ki ho)
       # - name: Terraform Apply
-        # if: ${{ inputs.require_approval || github.event_name == 'push' }}
         # run: terraform apply -auto-approve "tf-plan-${{ inputs.environment }}.tfplan"
       # Yha tak wala block...
 
