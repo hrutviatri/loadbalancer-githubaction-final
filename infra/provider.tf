@@ -15,7 +15,6 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    use_oidc = true
     # resource_group_name  = "ritkargs"
     # storage_account_name = "ritkasas"
     # container_name       = "ritkascs"
