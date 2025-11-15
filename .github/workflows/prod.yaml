@@ -61,7 +61,9 @@ jobs:
       # Approval toggles
       useEnvironmentInit:    ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_init == true }}
       useEnvironmentPlan:    ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_plan == true }}
-      useEnvironmentApply:   ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_apply == true }}
+      # useEnvironmentApply:   ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_apply == true }}
+      useEnvironmentApply:   ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.use_environment_apply == true) }}
+
       useEnvironmentDestroy: ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_destroy == true }}
 
 
