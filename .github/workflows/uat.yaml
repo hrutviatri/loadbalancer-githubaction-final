@@ -37,9 +37,9 @@ jobs:
       tfvars_file:  environments/uat.tfvars
 
       # Storage backend for UAT (change names as per your setup)
-      rgname:       ritkargvuat
-      saname:       ritkasavuat
-      scname:       ritkascvuat
+      rgname:       ritkargv
+      saname:       ritkasav
+      scname:       ritkascv
       key:          uat.tfstate
 
       # Run toggles
