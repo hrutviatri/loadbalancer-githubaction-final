@@ -36,6 +36,73 @@ env:
 
   
 jobs:
+
+  # add this job in your prod workflow (runs on ubuntu-latest)
+  preview-options:
+    name: Preview selected options
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Show event info
+        run: |
+          echo "GITHUB EVENT: ${{ github.event_name }}"
+          echo "REF: ${{ github.ref }}"
+          echo ""
+
+      - name: Compute and print inputs + derived toggles
+        env:
+          # raw inputs (workflow_dispatch boolean inputs)
+          input_use_environment_init:    ${{ inputs.use_environment_init }}
+          input_do_init:                 ${{ inputs.do_init }}
+          input_use_environment_plan:    ${{ inputs.use_environment_plan }}
+          input_do_plan:                 ${{ inputs.do_plan }}
+          input_use_environment_apply:   ${{ inputs.use_environment_apply }}
+          input_do_apply:                ${{ inputs.do_apply }}
+          input_use_environment_destroy: ${{ inputs.use_environment_destroy }}
+          input_do_destroy:              ${{ inputs.do_destroy }}
+
+          # Derived run toggles (what your reusable workflow expects)
+          # run on push OR when corresponding input is true
+          run_init:   ${{ github.event_name == 'push' || inputs.do_init }}
+          run_plan:   ${{ github.event_name == 'push' || inputs.do_plan }}
+          run_apply:  ${{ github.event_name == 'push' || inputs.do_apply }}
+          run_destroy: ${{ github.event_name == 'workflow_dispatch' && inputs.do_destroy }}
+
+          # Derived environment-approval toggles: push should force approval for apply
+          use_env_init:    ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_init }}
+          use_env_plan:    ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_plan }}
+          use_env_apply:   ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.use_environment_apply) }}
+          use_env_destroy: ${{ github.event_name == 'workflow_dispatch' && inputs.use_environment_destroy }}
+        run: |
+          echo "---- Raw inputs (workflow_dispatch) ----"
+          echo "use_environment_init:    $input_use_environment_init"
+          echo "do_init:                 $input_do_init"
+          echo "use_environment_plan:    $input_use_environment_plan"
+          echo "do_plan:                 $input_do_plan"
+          echo "use_environment_apply:   $input_use_environment_apply"
+          echo "do_apply:                $input_do_apply"
+          echo "use_environment_destroy: $input_use_environment_destroy"
+          echo "do_destroy:              $input_do_destroy"
+          echo ""
+
+          echo "---- Derived run toggles (will be passed to reusable workflow) ----"
+          echo "runInit:     $run_init"
+          echo "runPlan:     $run_plan"
+          echo "runApply:    $run_apply"
+          echo "runDestroy:   $run_destroy"
+          echo ""
+
+          echo "---- Derived environment (approval) toggles ----"
+          echo "useEnvironmentInit:    $use_env_init"
+          echo "useEnvironmentPlan:    $use_env_plan"
+          echo "useEnvironmentApply:   $use_env_apply"
+          echo "useEnvironmentDestroy: $use_env_destroy"
+          echo ""
+
+          echo "---- Note ----"
+          echo "If any job has 'environment: <non-empty>' that job will request approval from that environment's protection rules."
+
+
   # 1️⃣ INIT + FMT + VALIDATE
   init:
     if: ${{ inputs.runInit }}
