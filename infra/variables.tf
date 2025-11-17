@@ -140,102 +140,102 @@ variable "vms" {
 }
 
 
-# Variable for SQL Servers
-variable "sql_servers" {
-  description = "Map of SQL Server configurations"
-  type = map(object({
-    sqlservername                 = string
-    rg_name                       = string
-    location                      = string
-    version                       = string
-    server_login_username         = string
-    server_login_password         = string
-    public_network_access_enabled = optional(bool, false)
-  }))
-}
-
-# Variable for flattened firewall rules
-variable "firewall_rules" {
-  description = "Flattened firewall rules with server_id reference"
-  type = map(object({
-    server_id        = string
-    name             = string
-    start_ip_address = string
-    end_ip_address   = string
-  }))
-}
-
-
-variable "sql_databases" {
-  description = "Map of SQL Databases with info about which server they belong to"
-  type = map(object({
-    name           = string
-    server_name    = string
-    resource_group = string
-    sku_name       = string
-    collation      = optional(string, "SQL_Latin1_General_CP1_CI_AS")
-    max_size_gb    = optional(number, 5)
-    zone_redundant = optional(bool, false)
-  }))
-}
-
-
-
-variable "azurerm_lb_rb" {
-  type = map(object({
-    pip_name = string
-    rg_name  = string
-    lb_name  = string
-    location = string
-    sku      = string
-    frontend_ip_config = list(object({ # Ensure name same as used in main.tf
-      name = string
-    }))
-  }))
-}
-variable "backend_ap_rb" {
-  type = map(object({
-    rg_name           = string
-    lb_name           = string
-    backend_pool_name = string
-  }))
-}
-variable "nic_bp_association" {
-  type = map(object({
-    nic_name                  = string
-    nic_rg_name               = string
-    lb_name                   = string
-    rg_name                   = string
-    backend_address_pool_name = string
-    nic_ka_ip_config_name     = string
-  }))
-}
-
-variable "lb_probe" {
-  type = map(object({
-    probe_name     = string
-    probe_protocol = string
-    probe_port     = number
-    rg_name        = string
-    lb_name        = string
-  }))
-}
-
-variable "lb_rule" {
-  type = map(object({
-    lb_name                         = string
-    rg_name                         = string
-    backend_address_pool_db_ka_name = string
-    lb_rule_name                    = string
-    protocol                        = string
-    frontend_port                   = number
-    backend_port                    = number
-    frontend_ip_configuration_name  = string
-    probe_name                      = string
-  }))
-}
-
-
-# variable "lb_probe_ids" {
-#   type = map(string)
+# # Variable for SQL Servers
+# variable "sql_servers" {
+#   description = "Map of SQL Server configurations"
+#   type = map(object({
+#     sqlservername                 = string
+#     rg_name                       = string
+#     location                      = string
+#     version                       = string
+#     server_login_username         = string
+#     server_login_password         = string
+#     public_network_access_enabled = optional(bool, false)
+#   }))
 # }
+
+# # Variable for flattened firewall rules
+# variable "firewall_rules" {
+#   description = "Flattened firewall rules with server_id reference"
+#   type = map(object({
+#     server_id        = string
+#     name             = string
+#     start_ip_address = string
+#     end_ip_address   = string
+#   }))
+# }
+
+
+# variable "sql_databases" {
+#   description = "Map of SQL Databases with info about which server they belong to"
+#   type = map(object({
+#     name           = string
+#     server_name    = string
+#     resource_group = string
+#     sku_name       = string
+#     collation      = optional(string, "SQL_Latin1_General_CP1_CI_AS")
+#     max_size_gb    = optional(number, 5)
+#     zone_redundant = optional(bool, false)
+#   }))
+# }
+
+
+
+# variable "azurerm_lb_rb" {
+#   type = map(object({
+#     pip_name = string
+#     rg_name  = string
+#     lb_name  = string
+#     location = string
+#     sku      = string
+#     frontend_ip_config = list(object({ # Ensure name same as used in main.tf
+#       name = string
+#     }))
+#   }))
+# }
+# variable "backend_ap_rb" {
+#   type = map(object({
+#     rg_name           = string
+#     lb_name           = string
+#     backend_pool_name = string
+#   }))
+# }
+# variable "nic_bp_association" {
+#   type = map(object({
+#     nic_name                  = string
+#     nic_rg_name               = string
+#     lb_name                   = string
+#     rg_name                   = string
+#     backend_address_pool_name = string
+#     nic_ka_ip_config_name     = string
+#   }))
+# }
+
+# variable "lb_probe" {
+#   type = map(object({
+#     probe_name     = string
+#     probe_protocol = string
+#     probe_port     = number
+#     rg_name        = string
+#     lb_name        = string
+#   }))
+# }
+
+# variable "lb_rule" {
+#   type = map(object({
+#     lb_name                         = string
+#     rg_name                         = string
+#     backend_address_pool_db_ka_name = string
+#     lb_rule_name                    = string
+#     protocol                        = string
+#     frontend_port                   = number
+#     backend_port                    = number
+#     frontend_ip_configuration_name  = string
+#     probe_name                      = string
+#   }))
+# }
+
+
+# # variable "lb_probe_ids" {
+# #   type = map(string)
+# # }

@@ -159,62 +159,62 @@ vms = {
   }
 }
 
-# sql_servers = {
-#   server1 = {
-#     sqlservername                 = "ritsqlserver1123-prod"
-#     rg_name                       = "rit-prod-rg1"
-#     location                      = "North Europe"
-#     version                       = "12.0"
-#     server_login_username         = "server"
-#     server_login_password         = "Ritesh@12345"
-#     public_network_access_enabled = true
-#   }
-# }
+sql_servers = {
+  server1 = {
+    sqlservername                 = "ritsqlserver1123-prod"
+    rg_name                       = "rit-prod-rg1"
+    location                      = "North Europe"
+    version                       = "12.0"
+    server_login_username         = "server"
+    server_login_password         = "Ritesh@12345"
+    public_network_access_enabled = true
+  }
+}
 
-# firewall_rules = {
-#   "server1-AllowIP1" = { server_id = "server1", name = "AllowIP1", start_ip_address = "10.0.17.62", end_ip_address = "10.0.17.62" }
-#   "server1-AllowIP2" = { server_id = "server1", name = "AllowIP2", start_ip_address = "49.43.131.11", end_ip_address = "49.43.131.11" }
-# }
+firewall_rules = {
+  "server1-AllowIP1" = { server_id = "server1", name = "AllowIP1", start_ip_address = "10.0.17.62", end_ip_address = "10.0.17.62" }
+  "server1-AllowIP2" = { server_id = "server1", name = "AllowIP2", start_ip_address = "49.43.131.11", end_ip_address = "49.43.131.11" }
+}
 
-# sql_databases = {
-#   db1 = { name = "appdb", server_name = "ritsqlserver1123-prod", resource_group = "rit-prod-rg1", sku_name = "S0" }
-#   db2 = { name = "analyticsdb", server_name = "ritsqlserver1123-prod", resource_group = "rit-prod-rg1", sku_name = "S1", max_size_gb = 20, zone_redundant = false }
-# }
+sql_databases = {
+  db1 = { name = "appdb", server_name = "ritsqlserver1123-prod", resource_group = "rit-prod-rg1", sku_name = "S0" }
+  db2 = { name = "analyticsdb", server_name = "ritsqlserver1123-prod", resource_group = "rit-prod-rg1", sku_name = "S1", max_size_gb = 20, zone_redundant = false }
+}
 
-# azurerm_lb_rb = {
-#   lb1 = {
-#     rg_name            = "rit-prod-rg1"
-#     pip_name           = "loadbalancerpip-prod"
-#     lb_name            = "rit-loadbalancer-prod"
-#     location           = "North Europe"
-#     sku                = "Standard"
-#     frontend_ip_config = [{ name = "rit-frontend-ipconfig-prod" }]
-#   }
-# }
+azurerm_lb_rb = {
+  lb1 = {
+    rg_name            = "rit-prod-rg1"
+    pip_name           = "loadbalancerpip-prod"
+    lb_name            = "rit-loadbalancer-prod"
+    location           = "North Europe"
+    sku                = "Standard"
+    frontend_ip_config = [{ name = "rit-frontend-ipconfig-prod" }]
+  }
+}
 
-# backend_ap_rb = {
-#   bap1 = { lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_pool_name = "rit-backend-pool-prod" }
-# }
+backend_ap_rb = {
+  bap1 = { lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_pool_name = "rit-backend-pool-prod" }
+}
 
-# nic_bp_association = {
-#   firstassociation  = { nic_name = "pahelanic-prod", nic_rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_address_pool_name = "rit-backend-pool-prod", nic_ka_ip_config_name = "pahela-internal-prod" }
-#   secondassociation = { nic_name = "dusranic-prod", nic_rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_address_pool_name = "rit-backend-pool-prod", nic_ka_ip_config_name = "dusra-internal-prod" }
-# }
+nic_bp_association = {
+  firstassociation  = { nic_name = "pahelanic-prod", nic_rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_address_pool_name = "rit-backend-pool-prod", nic_ka_ip_config_name = "pahela-internal-prod" }
+  secondassociation = { nic_name = "dusranic-prod", nic_rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod", rg_name = "rit-prod-rg1", backend_address_pool_name = "rit-backend-pool-prod", nic_ka_ip_config_name = "dusra-internal-prod" }
+}
 
-# lb_probe = {
-#   lb1 = { probe_name = "rit-health-probe-prod", probe_protocol = "Tcp", probe_port = 80, rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod" }
-# }
+lb_probe = {
+  lb1 = { probe_name = "rit-health-probe-prod", probe_protocol = "Tcp", probe_port = 80, rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod" }
+}
 
-# lb_rule = {
-#   lb1 = {
-#     lb_name                         = "rit-loadbalancer-prod"
-#     rg_name                         = "rit-prod-rg1"
-#     backend_address_pool_db_ka_name = "rit-backend-pool-prod"
-#     lb_rule_name                    = "rit-lb-rule-prod"
-#     protocol                        = "Tcp"
-#     frontend_port                   = 80
-#     backend_port                    = 80
-#     frontend_ip_configuration_name  = "rit-frontend-ipconfig-prod"
-#     probe_name                      = "rit-health-probe-prod"
-#   }
-# }
+lb_rule = {
+  lb1 = {
+    lb_name                         = "rit-loadbalancer-prod"
+    rg_name                         = "rit-prod-rg1"
+    backend_address_pool_db_ka_name = "rit-backend-pool-prod"
+    lb_rule_name                    = "rit-lb-rule-prod"
+    protocol                        = "Tcp"
+    frontend_port                   = 80
+    backend_port                    = 80
+    frontend_ip_configuration_name  = "rit-frontend-ipconfig-prod"
+    probe_name                      = "rit-health-probe-prod"
+  }
+}
