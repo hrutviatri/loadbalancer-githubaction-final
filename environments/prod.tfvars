@@ -205,6 +205,7 @@ lb_probe = {
   lb1 = { probe_name = "rit-health-probe-prod", probe_protocol = "Tcp", probe_port = 80, rg_name = "rit-prod-rg1", lb_name = "rit-loadbalancer-prod" }
 }
 
+
 lb_rule = {
   lb1 = {
     lb_name                         = "rit-loadbalancer-prod"
